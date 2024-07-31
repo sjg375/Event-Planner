@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "cd app && node server.js"
+    "setup": ""
+  },
+  "dependencies": {
+    "@types/node": "^18.0.6",
+    "express": "^4.19.2",
+    "pg": "^8.12.0"
+  }
+}
