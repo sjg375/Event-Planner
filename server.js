@@ -6,6 +6,7 @@ app.use(express.json());
 let port = 3000;
 let hostname = "localhost";
 
+//A Postgres database of events may be better
 let Events = {};
 
 app.post("/", (req, res) => {
