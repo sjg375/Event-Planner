@@ -9,16 +9,17 @@ let hostname = "localhost";
 //A Postgres database of events may be better
 let Events = {};
 
-app.post("/", (req, res) => {
+app.get("/events", (req, res) => {
   //Should Serve all events
 });
 
 app.post("/api/:eventid", (req, res) => {
-  //Need to decide what is included in the json body
+  //Recieve a JSON object with a name, location, start date, and end date
+  
 });
 
 app.get("/api/:eventid", (req, res) => {
-  //Should serve the event
+  //Should serve the event object
 });
 
 app.listen(port, hostname, () => {
