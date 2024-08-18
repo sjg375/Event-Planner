@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create an Event</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Create an event</h1>
+    <form id="Event_Form">
+      <div>
+        <label for="name">Event Name: </label>
+        <input id="name" type="text">
+      </div>
+      <div>
+        <label for="location">Location: </label>
+        <input id="location" type="text">
+      </div>
+      <div>
+        <label for="start_date">Start date: </label>
+        <input id="start_date" type="datetime-local">
+      </div>
+      <div>
+        <label for="end_date">End date: </label>
+        <input id="end_date" type="datetime-local">
+      </div>
+      <div>
+        <input type="submit" value="Create Event">
+      </div>
+    </form>
+
+    <script>
+        //Event listener to create the event object
+        let form = document.getElementById("Event_Form");
+        let newEvent;
+
+        form.addEventListener('submit', (e) =>{
+            e.preventDefault();
+
+            let newEvent = {
+                name: document.getElementById("name").value,
+                location: document.getElementById("location").value,
+                start_date: document.getElementById("start_date").value,
+                end_date: document.getElementById("end_date").value,
+            }
+
+            let Post_url = '/api/'+ name;
+
+            fetch(Post_url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(newEvent),
+            }).then(response => {
+                console.log("Response recieved:", response.status);
+            }).catch(error => {
+                console.log(error);
+            })
+
+            console.log(newEvent);
+        });
+
+    </script>
+  </body>
+</html>
+</html>
