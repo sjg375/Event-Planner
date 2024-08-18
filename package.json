@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "node server.js"
+    "start": "cd app && node server.js"
     "setup": ""
   },
   "dependencies": {
