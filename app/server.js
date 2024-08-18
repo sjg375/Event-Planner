@@ -204,6 +204,19 @@ app.get("/private", authorize, (req, res) => {
   return res.send("A private message\n");
 });
 
+app.get("/events", (req, res) => {
+  //Should Serve all events
+});
+
+app.post("/api/:eventid", (req, res) => {
+  //Recieve a JSON object with a name, location, start date, and end date
+  
+});
+
+app.get("/api/:eventid", (req, res) => {
+  //Should serve the event object
+});
+
 app.listen(port, hostname, () => {
   console.log(`http://${hostname}:${port}`);
 });
