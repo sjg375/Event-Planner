@@ -45,7 +45,9 @@
                 end_date: document.getElementById("end_date").value,
             }
 
-            fetch("/api/events", {
+            let Post_url = '/api/'+ name;
+
+            fetch(Post_url, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -62,4 +64,5 @@
 
     </script>
   </body>
+</html>
 </html>
