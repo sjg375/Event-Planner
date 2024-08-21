@@ -15,6 +15,7 @@
         <li> <a href= "post_event.html">Create an Event</a></li>
       </ul>
     </nav>
+
     <h1>Create an event</h1>
     <form id="Event_Form">
       <div>
@@ -34,6 +35,10 @@
         <input id="end_date" type="datetime-local">
       </div>
       <div>
+        <p>Description: </p>
+        <textarea id="description" type="text"></textarea>
+      </div>
+      <div>
         <input type="submit" value="Create Event">
       </div>
     </form>
@@ -51,6 +56,8 @@
                 location: document.getElementById("location").value,
                 start_date: document.getElementById("start_date").value,
                 end_date: document.getElementById("end_date").value,
+                description: document.getElementById("description").value,
+                attendees: [],
             }
 
             let Post_url = '/api/'+ name;
