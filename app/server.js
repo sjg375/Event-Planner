@@ -4,7 +4,7 @@ let argon2 = require("argon2"); // or bcrypt, whatever
 let cookieParser = require("cookie-parser");
 let crypto = require("crypto");
 const path = require('path');
-let env = require("../.gitignore/env.json");
+let env = require("../env.json");
 
 let hostname = "localhost";
 let port = 3000;
