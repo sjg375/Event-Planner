@@ -3,7 +3,8 @@ let { Pool } = require("pg");
 let argon2 = require("argon2"); // or bcrypt, whatever
 let cookieParser = require("cookie-parser");
 let crypto = require("crypto");
-let env = require("../env.json");
+const path = require('path');
+let env = require("../.gitignore/env.json");
 
 let hostname = "localhost";
 let port = 3000;
@@ -12,6 +13,12 @@ let pool = new Pool(env);
 let app = express();
 app.use(express.json());
 app.use(cookieParser());
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 let tokenStorage = {};
 
@@ -140,7 +147,6 @@ app.post("/login", async (req, res) => {
     return res.sendStatus(400); // TODO
   }
   let hash = result.rows[0].password;
-  console.log(username, password, hash);
 
   let verifyResult;
   try {
