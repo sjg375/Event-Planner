@@ -35,4 +35,34 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
       document.getElementById('message').textContent = 'Account creation failed.';
     }
   });
-  
+
+document.getElementById("Event_Form").addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    let name = document.getElementById("name").value
+    let post_url = '/api/' + name;
+    
+    let new event = {
+        name: document.getElementById("name").value,
+        location: document.getElementById("location").value,
+        start_date: document.getElementById("start_date").value,
+        end_date: document.getElementById("end_date").value,
+        description: document.getElementById("description").value,
+        attendees: [],
+    }
+
+    let response = await fetch(post_url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newEvent)
+    });
+
+    if (response.ok){
+        document.getElementById('message').textContent = 'Event created successfully!';
+    }
+    else{
+        document.getElementById('message').textContent = 'Event creation failed.';
+    }
+});
