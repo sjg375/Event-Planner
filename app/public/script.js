@@ -59,6 +59,10 @@ document.getElementById("Event_Form").addEventListener('submit', async function(
         body: JSON.stringify(newEvent)
     });
 
-    //need to finish error handling
-}
-  
+    if (response.ok){
+        document.getElementById('message').textContent = 'Event created successfully!';
+    }
+    else{
+        document.getElementById('message').textContent = 'Event creation failed.';
+    }
+});
