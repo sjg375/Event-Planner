@@ -300,6 +300,11 @@ app.get("/api/:event", async (req, res) => {
   return res.status(200).json(eventExists);
 });
 
+app.put("/api/:event", async (req, res) => {
+  //Check that the user sending the request is the creator of the event. If so, update the database
+  
+});
+
 app.listen(port, hostname, () => {
   console.log(`http://${hostname}:${port}`);
 });
