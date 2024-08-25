@@ -210,17 +210,94 @@ app.get("/private", authorize, (req, res) => {
   return res.send("A private message\n");
 });
 
-app.get("/events", (req, res) => {
+app.get("/events", async (req, res) => {
   //Should Serve all events
+  let haveEvents;
+  try{
+    haveEvents = await pool.query(
+      "SELECT name, location, start_date, end_date, description, attendees FROM events FOR JSON PATH"
+    );
+  }
+  catch(error){
+    console.log("SELECT FAILED", error);
+    return res.sendStatus(500);
+  }
+
+  return res.status(200).json(haveEvents);
 });
 
-app.post("/api/:eventid", (req, res) => {
-  //Recieve a JSON object with a name, location, start date, and end date
+
+//Still need to add cookie saving to relate the event to the creator
+app.post("/api/:event", async (req, res) => {
+  //Enter Event into the database
+  let event = req.params.event;
+  let body = req.body;
+  let props = ['name', 'location', 'start_date', 'end_date', 'description', 'attendees'];
+  let hasAllProps = props.every(p => body.hasOwnProperty(p));
+  let {name, location, start_date, end_date, description, attendees} = body;
+
+
+  //check that the event json is valid
+  if(!hasAllProps){
+    console.log("Incorrect event structure!\n");
+    return res.sendStatus(400);
+  }
+
+  //check if event with this name already exists
+  let eventExists;
+  try{
+    eventExists = await pool.query(
+      "SELECT 1 FROM events WHERE name = $1",
+      [event]
+    );
+    if(eventExists.rows.length > 0){
+      return res.status(400).send("Event already exists");
+    }
+  }
+  catch(error){
+    console.log("Event check failed!", error);
+    return res.sendStatus(500);
+  }
+
+  try{
+    await pool.query("INSERT INTO events (name, location, start_date, end_date, description, attendees) VALUES ($1, $2, $3, $4, $5, $6)", [
+      name,
+      location,
+      start_date,
+      end_date,
+      description,
+      attendees,
+    ]);
+  }
+  catch(error){
+    console.log("INSERT FAILED", error);
+    return res.sendStatus(500);
+  }
   
+  res.status(200);
+  res.send();
 });
 
-app.get("/api/:eventid", (req, res) => {
+app.get("/api/:event", async (req, res) => {
   //Should serve the event object
+  let event = req.params.event;
+
+  let eventExists;
+  try{
+    eventExists = await pool.query(
+      "SELECT 1 FROM events WHERE name = $1 FOR JSON PATH",
+      [event]
+    );
+    if(eventExists.rows.length < 1){
+      return res.status(400).send("Event does not exist");
+    }
+  }
+  catch(error){
+    console.log("Event check failed!", error);
+    return res.sendStatus(500);
+  }
+
+  return res.status(200).json(eventExists);
 });
 
 app.listen(port, hostname, () => {
