@@ -42,7 +42,7 @@ document.getElementById("Event_Form").addEventListener('submit', async function(
     let name = document.getElementById("name").value
     let post_url = '/api/' + name;
     
-    let new event = {
+    let newEvent = {
         name: document.getElementById("name").value,
         location: document.getElementById("location").value,
         start_date: document.getElementById("start_date").value,
