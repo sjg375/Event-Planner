@@ -17,8 +17,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
       if (response.ok) {
         document.getElementById('message').textContent = 'Login successful!';
-      } else {
-        document.getElementById('message').textContent = 'Login failed.';
+      } else if (response.status === 400){
+        document.getElementById('message').textContent = 'Invalid Credentials';
+      } else if (response.status === 500) {
+        document.getElementById('message').textContent = 'Server Error';
+      } else if (response.status === 403) {
+        document.getElementById('message').textContent = 'Unauthorized Access';
       }
     });
   }
