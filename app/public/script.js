@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
       if (response.ok) {
         document.getElementById('message').textContent = 'Account created successfully!';
+        window.location.href = `/home/${username}`;
       } else {
         document.getElementById('message').textContent = 'Account creation failed.';
       }

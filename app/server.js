@@ -123,7 +123,10 @@ app.post("/create", async (req, res) => {
 
   let token = makeToken();
   tokenStorage[token] = username;
-  return res.cookie("token", token, cookieOptions).status(200).send();
+  res.cookie("token", token, cookieOptions)
+  console.log('redirect called');
+  res.redirect(`/home/${username}`);
+
 });
 
 
@@ -211,7 +214,6 @@ app.post("/login", async (req, res) => {
   tokenStorage[token] = username;
 
   res.cookie("token", token, cookieOptions);
-
   console.log('redirect called');
   res.redirect(`/home/${username}`);
 });
