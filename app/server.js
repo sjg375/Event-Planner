@@ -163,7 +163,7 @@ app.get('/home/:username', authorize, (req, res) => {
   console.log('params', req.params);
   let username = req.params.username;
   console.log(username);
-  res.render('home', { username: username }); 
+  res.render('home', { username: username });
 });
 
 app.post("/login", async (req, res) => {
