@@ -127,13 +127,13 @@ app.post("/create", async (req, res) => {
 });
 
 
-/* middleware; check if login token in token storage, if not, 403 response */
+// this was fully test! 
 let authorize = (req, res, next) => {
   console.log('authorization reach');
   let { token } = req.cookies;
   console.log(token, tokenStorage); // debug issue: this never ran
   if (token === undefined || !tokenStorage.hasOwnProperty(token)) {
-    return res.sendStatus(403); // if token is invalid or missing 
+    return res.status(403); // if token is invalid or missing 
   }
   next();
 };
@@ -155,9 +155,7 @@ app.get('/test-auth', authorize, (req,res) => {
   res.send('Authorixation passed');
 }); 
 
-// redirect works 
-// rendering does not work? 
-// this ran message shows up but is still only connected to login page 
+// redirect issue
 app.get('/home/:username', authorize, (req, res) => {
   console.log('this ran!')
   console.log('params', req.params);

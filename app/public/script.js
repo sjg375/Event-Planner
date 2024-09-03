@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
       if (response.ok) {
         document.getElementById('message').textContent = 'Login successful!';
+        window.location.href = `/home/${username}`;
       } else if (response.status === 400){
         document.getElementById('message').textContent = 'Invalid Credentials';
       } else if (response.status === 500) {
