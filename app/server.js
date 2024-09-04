@@ -134,9 +134,15 @@ app.post("/create", async (req, res) => {
 let authorize = (req, res, next) => {
   console.log('authorization reach');
   let { token } = req.cookies;
+  let { username } = req.params;
   console.log(token, tokenStorage); // debug issue: this never ran
   if (token === undefined || !tokenStorage.hasOwnProperty(token)) {
     return res.status(403); // if token is invalid or missing 
+  }
+
+
+  if (tokenStorage[token] !== username) {
+    return res.status(403).send('Forbiddden');
   }
   next();
 };
