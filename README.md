@@ -6,3 +6,12 @@ Group Name: SAJ
 
 # How to run
 to-do
+Users can create an account or browse as a guest
+Users can create events in the main page
+Users can sign up for events
+Users can invite people to events
+Users can see a map of events
+
+# Done
+- Users can create an account 
+- Users have a homepage

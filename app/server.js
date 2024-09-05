@@ -11,8 +11,13 @@ let port = 3000;
 
 let pool = new Pool(env);
 let app = express();
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
 app.use(express.json());
 app.use(cookieParser());
+
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -116,10 +121,56 @@ app.post("/create", async (req, res) => {
     return res.sendStatus(500); // TODO
   }
 
-  // TODO automatically log people in when they create account, because why not?
   let token = makeToken();
   tokenStorage[token] = username;
-  return res.cookie("token", token, cookieOptions).status(200).send();
+  res.cookie("token", token, cookieOptions)
+  console.log('redirect called');
+  res.redirect(`/home/${username}`);
+
+});
+
+
+// this was fully test! 
+let authorize = (req, res, next) => {
+  console.log('authorization reach');
+  let { token } = req.cookies;
+  let { username } = req.params;
+  console.log(token, tokenStorage); // debug issue: this never ran
+  if (token === undefined || !tokenStorage.hasOwnProperty(token)) {
+    return res.status(403); // if token is invalid or missing 
+  }
+
+
+  if (tokenStorage[token] !== username) {
+    return res.status(403).send('Forbiddden');
+  }
+  next();
+};
+
+// authorize test bc homepage render isnt working..
+app.get('/set-token', (req, res) => {
+  let token = makeToken();
+  let username = 'testuser';
+  tokenStorage[token] = username;
+
+  res.cookie('token', token, cookieOptions);
+
+  console.log('redirect will be tested');
+  res.redirect('/test-auth');
+});
+
+// authroie tets 
+app.get('/test-auth', authorize, (req,res) => {
+  res.send('Authorixation passed');
+}); 
+
+// redirect issue
+app.get('/home/:username', authorize, (req, res) => {
+  console.log('this ran!')
+  console.log('params', req.params);
+  let username = req.params.username;
+  console.log(username);
+  res.render('home', { username: username });
 });
 
 app.post("/login", async (req, res) => {
@@ -127,7 +178,7 @@ app.post("/login", async (req, res) => {
 
   // TODO validate body is correct shape and type
   if (!validateLogin(body)) {
-    return res.sendStatus(400); // TODO
+    return res.status(400).json({ error : 'invalid login info'}); // TODO
   }
   let { username, password } = body;
 
@@ -139,12 +190,12 @@ app.post("/login", async (req, res) => {
     );
   } catch (error) {
     console.log("SELECT FAILED", error);
-    return res.sendStatus(500); // TODO
+    return res.status(500).json({ error: "username not found" }); // TODO
   }
 
   // username doesn't exist
   if (result.rows.length === 0) {
-    return res.sendStatus(400); // TODO
+    return res.status(400).json({ error: "username not found" }); 
   }
   let hash = result.rows[0].password;
 
@@ -153,32 +204,26 @@ app.post("/login", async (req, res) => {
     verifyResult = await argon2.verify(hash, password);
   } catch (error) {
     console.log("VERIFY FAILED", error);
-    return res.sendStatus(500); // TODO
+    return res.status(500).json({error: "verification failed"}); 
   }
 
   // password didn't match
   console.log(verifyResult);
   if (!verifyResult) {
     console.log("Credentials didn't match");
-    return res.sendStatus(400); // TODO
+    return res.status(400).json({error: "password is incorretc"}); 
   }
 
   // generate login token, save in cookie
   let token = makeToken();
   console.log("Generated token", token);
   tokenStorage[token] = username;
-  return res.cookie("token", token, cookieOptions).send(); // TODO
+
+  res.cookie("token", token, cookieOptions);
+  console.log('redirect called');
+  res.redirect(`/home/${username}`);
 });
 
-/* middleware; check if login token in token storage, if not, 403 response */
-let authorize = (req, res, next) => {
-  let { token } = req.cookies;
-  console.log(token, tokenStorage);
-  if (token === undefined || !tokenStorage.hasOwnProperty(token)) {
-    return res.sendStatus(403); // TODO
-  }
-  next();
-};
 
 app.post("/logout", (req, res) => {
   let { token } = req.cookies;
