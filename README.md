@@ -5,7 +5,8 @@ Seth Jessie-Green, sjj53
 Group Name: SAJ
 
 # How to run
-to-do
+
+#to-do
 - Users can create an account or browse as a guest
 - Users can create events on the main page
 - Users can sign up for events
