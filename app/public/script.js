@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
       console.log("Something went wrong.");
     }
   }
-  
+
   async function getEvents(){
     let response = await fetch("/events");
 
@@ -99,10 +99,10 @@ document.addEventListener('DOMContentLoaded', function() {
       });
 
       if (response.ok){
-          document.getElementById('message').textContent = 'Event created successfully!';
+        document.getElementsByClassName('submit-success').style.display = 'block';
       }
       else{
-          document.getElementById('message').textContent = 'Event creation failed.';
+        document.getElementsByClassName('submit-fail').style.display = 'block';
       }
     });
   }

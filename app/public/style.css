@@ -54,3 +54,6 @@ textarea{
     padding: 3px;
     font-size: 12px;
 }
+.submit-success, .submit-fail{
+    display: none;
+}
