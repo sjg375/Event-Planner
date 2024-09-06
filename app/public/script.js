@@ -1,11 +1,22 @@
 document.addEventListener('DOMContentLoaded', function() {
   let createForm = document.getElementById('createForm');
   let loginForm = document.getElementById('loginForm');
+  let eventNavlink = document.getElementById('events-link');
   
 
   async function viewDetails(event_id){
     let get_url = "/events/" + event_id;
     let response = await fetch(get_url);
+
+    if(response.ok){
+      console.log("HTTP response recieved");
+    }
+    else{
+      console.log("Something went wrong.");
+    }
+  }
+  async function getEvents(){
+    let response = await fetch("/events");
 
     if(response.ok){
       console.log("HTTP response recieved");

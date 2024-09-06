@@ -115,7 +115,7 @@ function allEventsPage(events){
     <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>Event Details</title>
+      <title>Events</title>
       <link rel="stylesheet" href="style.css">
     </head>
     <body>
@@ -127,6 +127,7 @@ function allEventsPage(events){
           <a class="nav" href= "post_event.html">Create an Event</a>
       </nav>
       </header>
+      <h1>Events</h1>
       <div class="event-div">`;
 
   for(let event in events){
