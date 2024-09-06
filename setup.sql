@@ -14,7 +14,12 @@ CREATE TABLE events(
     location VARCHAR(200) NOT NULL,
     start_date DATETIME NOT NULL,
     end_date DATETIME NOT NULL,
-    description VARCHAR(3000) NOT NULL,
-    attendees SET
+    description VARCHAR(3000) NOT NULL
 );
+DROP TABLE IF EXISTS attendees;
+CREATE TABLE attendees(
+    id SERIAL PRIMARY KEY
+    user_id int,
+    event_id int,
+)
 

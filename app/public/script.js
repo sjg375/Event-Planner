@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
       e.preventDefault();
 
       let name = document.getElementById("name").value
-      let post_url = '/api/' + name;
+      let post_url = '/events/' + name;
       
       let newEvent = {
           name: document.getElementById("name").value,
@@ -62,7 +62,6 @@ document.addEventListener('DOMContentLoaded', function() {
           start_date: document.getElementById("start_date").value,
           end_date: document.getElementById("end_date").value,
           description: document.getElementById("description").value,
-          attendees: [],
       }
 
       let response = await fetch(post_url, {

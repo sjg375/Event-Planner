@@ -43,40 +43,8 @@
       </div>
     </form>
 
-    <script>
-        //Event listener to create the event object
-        let form = document.getElementById("Event_Form");
-        let newEvent;
+    <div id="message"></div>
 
-        form.addEventListener('submit', (e) =>{
-            e.preventDefault();
-
-            let newEvent = {
-                name: document.getElementById("name").value,
-                location: document.getElementById("location").value,
-                start_date: document.getElementById("start_date").value,
-                end_date: document.getElementById("end_date").value,
-                description: document.getElementById("description").value,
-                attendees: [],
-            }
-
-            let Post_url = '/api/'+ name;
-
-            fetch(Post_url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(newEvent),
-            }).then(response => {
-                console.log("Response recieved:", response.status);
-            }).catch(error => {
-                console.log(error);
-            })
-
-            console.log(newEvent);
-        });
-
-    </script>
-  </body>
+    <script src="script.js"></script>
+</body>
 </html>

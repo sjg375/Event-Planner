@@ -273,7 +273,7 @@ app.get("/events", async (req, res) => {
 
 
 //Still need to add cookie saving to relate the event to the creator
-app.post("/api/:event", async (req, res) => {
+app.post("/events/:event", async (req, res) => {
   //Enter Event into the database
   let event = req.params.event;
   let body = req.body;
@@ -323,7 +323,7 @@ app.post("/api/:event", async (req, res) => {
   res.send();
 });
 
-app.get("/api/:event", async (req, res) => {
+app.get("/events/:event", async (req, res) => {
   //Should serve the event object
   let event = req.params.event;
 
@@ -345,7 +345,7 @@ app.get("/api/:event", async (req, res) => {
   return res.status(200).json(eventExists);
 });
 
-app.put("/api/:event", async (req, res) => {
+app.put("/events/:event", async (req, res) => {
   //Check that the user sending the request is the creator of the event. If so, update the database
   
 });
