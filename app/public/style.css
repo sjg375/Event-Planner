@@ -1,0 +1,24 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    color: #333;
+}
+.event-details {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+}
+.event-details h1 {
+    font-size: 24px;
+    color: #333;
+}
+.event-details p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+.event-details .label {
+    font-weight: bold;
+    color: #555;
+}

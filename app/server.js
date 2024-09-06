@@ -73,6 +73,40 @@ function validateLogin(body) {
   return true;
 }
 
+function buildEventPage(event){
+  //takes a json object as input, extract field values and put them in the html
+  let {name, location, start_date, end_date, description} = event;
+
+  let string = `<!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Event Details</title>
+      <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+      <nav>
+        <ul> 
+          <li> <a href= "index.html">Home</a></li>
+          <li> <a href= "login.html">Login</a></li>
+          <li> <a href= "CreateAccount.html">Create Account</a></li>
+          <li> <a href= "post_event.html">Create an Event</a></li>
+        </ul>
+      </nav>
+      <div class='event-details'>
+        <h1>${name}</h1>
+        <p><span class ='label'>Location:</span> ${location}</p>
+        <p><span class ='label'>Start Date:</span> ${start_date}</p>
+        <p><span class ='label'>End Date:</span> ${end_date}</p>
+        <p><span class ='label'>Description:</span><textarea type='text'>${description}</textarea></p>
+      </div>
+    </body>
+    </html>`;
+  
+  return string;
+}
+
 app.post("/create", async (req, res) => {
   let { body } = req;
 
@@ -277,9 +311,9 @@ app.post("/events/:event", async (req, res) => {
   //Enter Event into the database
   let event = req.params.event;
   let body = req.body;
-  let props = ['name', 'location', 'start_date', 'end_date', 'description', 'attendees'];
+  let props = ['name', 'location', 'start_date', 'end_date', 'description'];
   let hasAllProps = props.every(p => body.hasOwnProperty(p));
-  let {name, location, start_date, end_date, description, attendees} = body;
+  let {name, location, start_date, end_date, description} = body;
 
 
   //check that the event json is valid
@@ -305,13 +339,12 @@ app.post("/events/:event", async (req, res) => {
   }
 
   try{
-    await pool.query("INSERT INTO events (name, location, start_date, end_date, description, attendees) VALUES ($1, $2, $3, $4, $5, $6)", [
+    await pool.query("INSERT INTO events (name, location, start_date, end_date, description) VALUES ($1, $2, $3, $4, $5)", [
       name,
       location,
       start_date,
       end_date,
       description,
-      attendees,
     ]);
   }
   catch(error){
@@ -325,6 +358,9 @@ app.post("/events/:event", async (req, res) => {
 
 app.get("/events/:event", async (req, res) => {
   //Should serve the event object
+  //need to query the sql table to get the event from event ID
+  //call create event page on the json
+  //send the html page
   let event = req.params.event;
 
   let eventExists;
@@ -342,7 +378,9 @@ app.get("/events/:event", async (req, res) => {
     return res.sendStatus(500);
   }
 
-  return res.status(200).json(eventExists);
+  let page = buildEventPage(eventExists);
+
+  return res.status(200).send(page);
 });
 
 app.put("/events/:event", async (req, res) => {
