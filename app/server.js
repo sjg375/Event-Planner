@@ -73,6 +73,77 @@ function validateLogin(body) {
   return true;
 }
 
+function buildEventPage(event){
+  //takes a json object as input, extract field values and put them in the html
+  let {name, location, start_date, end_date, description} = event;
+
+  let string = `<!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Event Details</title>
+      <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+      <header>
+        <nav>
+          <a class="nav" href= "index.html">Home</a>
+          <a class="nav" href= "login.html">Login</a>
+          <a class="nav" href= "CreateAccount.html">Create Account</a>
+          <a class="nav" href= "post_event.html">Create an Event</a>
+      </nav>
+      </header>
+      <div class='event-details'>
+        <h1>${name}</h1>
+        <p><span class ='label'>Location:</span> ${location}</p>
+        <p><span class ='label'>Start Date:</span> ${start_date}</p>
+        <p><span class ='label'>End Date:</span> ${end_date}</p>
+        <p><span class ='label'>Description:</span><textarea type='text'>${description}</textarea></p>
+      </div>
+    <script src="script.js"></script>
+    </body>
+    </html>`;
+  
+  return string;
+}
+
+function allEventsPage(events){
+  let string = `
+  <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Event Details</title>
+      <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+      <header>
+        <nav>
+          <a class="nav" href= "index.html">Home</a>
+          <a class="nav" href= "login.html">Login</a>
+          <a class="nav" href= "CreateAccount.html">Create Account</a>
+          <a class="nav" href= "post_event.html">Create an Event</a>
+      </nav>
+      </header>
+      <div class="event-div">`;
+
+  for(let event in events){
+    //Have a div with the event name and a button
+    string += `
+        <div class="event-item">
+          <h2>${event.name}</h2>
+          <button class="event-button" onclick="viewDetails('${event.id}')">View Details</button>
+        </div>`;
+  }
+  string += `
+      </div>
+      <script src="script.js"></script>
+    </body>
+    </html>`;
+}
+
 app.post("/create", async (req, res) => {
   let { body } = req;
 
@@ -260,7 +331,25 @@ app.get("/events", async (req, res) => {
   let haveEvents;
   try{
     haveEvents = await pool.query(
-      "SELECT name, location, start_date, end_date, description, attendees FROM events FOR JSON PATH"
+      "SELECT id, name, location, start_date, end_date, description FROM events FOR JSON PATH"
+    );
+  }
+  catch(error){
+    console.log("SELECT FAILED", error);
+    return res.sendStatus(500);
+  }
+
+  let page = allEventsPage(haveEvents);
+
+  return res.status(200).send(page);
+});
+
+app.get("/api/events", async (req, res) => {
+  //Should Serve all events
+  let haveEvents;
+  try{
+    haveEvents = await pool.query(
+      "SELECT name, location, start_date, end_date, description FROM events FOR JSON PATH"
     );
   }
   catch(error){
@@ -273,13 +362,13 @@ app.get("/events", async (req, res) => {
 
 
 //Still need to add cookie saving to relate the event to the creator
-app.post("/api/:event", async (req, res) => {
+app.post("/events/:event", async (req, res) => {
   //Enter Event into the database
   let event = req.params.event;
   let body = req.body;
-  let props = ['name', 'location', 'start_date', 'end_date', 'description', 'attendees'];
+  let props = ['name', 'location', 'start_date', 'end_date', 'description'];
   let hasAllProps = props.every(p => body.hasOwnProperty(p));
-  let {name, location, start_date, end_date, description, attendees} = body;
+  let {name, location, start_date, end_date, description} = body;
 
 
   //check that the event json is valid
@@ -305,13 +394,12 @@ app.post("/api/:event", async (req, res) => {
   }
 
   try{
-    await pool.query("INSERT INTO events (name, location, start_date, end_date, description, attendees) VALUES ($1, $2, $3, $4, $5, $6)", [
+    await pool.query("INSERT INTO events (name, location, start_date, end_date, description) VALUES ($1, $2, $3, $4, $5)", [
       name,
       location,
       start_date,
       end_date,
       description,
-      attendees,
     ]);
   }
   catch(error){
@@ -323,14 +411,17 @@ app.post("/api/:event", async (req, res) => {
   res.send();
 });
 
-app.get("/api/:event", async (req, res) => {
+app.get("/events/:event_id", async (req, res) => {
   //Should serve the event object
-  let event = req.params.event;
+  //need to query the sql table to get the event from event ID
+  //call create event page on the json
+  //send the html page
+  let event = req.params.event_id;
 
   let eventExists;
   try{
     eventExists = await pool.query(
-      "SELECT 1 FROM events WHERE name = $1 FOR JSON PATH",
+      "SELECT 1 FROM events WHERE id = $1 FOR JSON PATH",
       [event]
     );
     if(eventExists.rows.length < 1){
@@ -342,10 +433,12 @@ app.get("/api/:event", async (req, res) => {
     return res.sendStatus(500);
   }
 
-  return res.status(200).json(eventExists);
+  let page = buildEventPage(eventExists);
+
+  return res.status(200).send(page);
 });
 
-app.put("/api/:event", async (req, res) => {
+app.put("/events/:event", async (req, res) => {
   //Check that the user sending the request is the creator of the event. If so, update the database
   
 });

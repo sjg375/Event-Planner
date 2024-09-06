@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Payment Method</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Add a Payment Method</h1>
+  <form id="payment-form">
+    <div id="card-element">
+      <!-- Stripe's Card Element will be inserted here -->
+    </div>
+    <button type="submit">Save Payment Method</button>
+    <div id="payment-message"></div>
+  </form>
+
+  <!-- Load Stripe.js -->
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="/script.js"></script> <!-- Your JS file for handling form -->
+</body>
+</html>

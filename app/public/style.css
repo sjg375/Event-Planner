@@ -1,0 +1,53 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    color: #333;
+}
+.event-details {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+}
+.event-details h1 {
+    font-size: 24px;
+    color: black;
+}
+.event-details p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+.event-details .label {
+    color:black;
+    display: block;
+}
+.form-container{
+    width: 100%;
+    max-width: 600px;
+}
+.form-container label{
+    color:black;
+    display: block;
+}
+.form-container .input{
+    width: 100%;
+    padding: 8px;
+    border: 1px solid black;
+    border-radius: 4px;
+}
+a.nav{
+    text-decoration: none;
+    color:black;
+    background-color:#ddd;
+    padding: 5px;
+    border-radius: 5%;
+    margin: 5px;
+}
+textarea{
+    border: 1px solid black;
+    height:250px;
+    width: 60%;
+    padding: 3px;
+    font-size: 12px;
+}
