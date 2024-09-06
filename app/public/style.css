@@ -26,6 +26,9 @@ body {
     width: 100%;
     max-width: 600px;
 }
+.form-container div{
+    padding: 5px;
+}
 .form-container label{
     color:black;
     display: block;
@@ -50,4 +53,7 @@ textarea{
     width: 60%;
     padding: 3px;
     font-size: 12px;
+}
+.submit-success, .submit-fail{
+    display: none;
 }

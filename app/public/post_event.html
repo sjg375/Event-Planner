@@ -13,6 +13,7 @@
         <a class="nav" href= "login.html">Login</a>
         <a class="nav" href= "CreateAccount.html">Create Account</a>
         <a class="nav" href= "post_event.html">Create an Event</a>
+        <a class="nav" href="" onclick="getEvents();">Events</a>
     </nav>
   </header>
   <main>
@@ -46,7 +47,8 @@
         </div>
       </form>
     </div>
-    <div id="message"></div>
+    <div class="submit-success"><p>Event created successfully!</p></div>
+    <div class="submit-fail"><p>Event creation failed.</p></div>
   </main>
   <script src="script.js"></script>
 </body>

@@ -1,11 +1,21 @@
 document.addEventListener('DOMContentLoaded', function() {
   let createForm = document.getElementById('createForm');
   let loginForm = document.getElementById('loginForm');
-  
 
   async function viewDetails(event_id){
     let get_url = "/events/" + event_id;
     let response = await fetch(get_url);
+
+    if(response.ok){
+      console.log("HTTP response recieved");
+    }
+    else{
+      console.log("Something went wrong.");
+    }
+  }
+
+  async function getEvents(){
+    let response = await fetch("/events");
 
     if(response.ok){
       console.log("HTTP response recieved");
@@ -89,10 +99,10 @@ document.addEventListener('DOMContentLoaded', function() {
       });
 
       if (response.ok){
-          document.getElementById('message').textContent = 'Event created successfully!';
+        document.getElementsByClassName('submit-success').style.display = 'block';
       }
       else{
-          document.getElementById('message').textContent = 'Event creation failed.';
+        document.getElementsByClassName('submit-fail').style.display = 'block';
       }
     });
   }
