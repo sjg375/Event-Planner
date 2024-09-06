@@ -7,44 +7,47 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <header>
     <nav>
-      <ul> 
-        <li> <a href= "index.html">Home</a></li>
-        <li> <a href= "login.html">Login</a></li>
-        <li> <a href= "CreateAccount.html">Create Account</a></li>
-        <li> <a href= "post_event.html">Create an Event</a></li>
-      </ul>
+        <a class="nav" href= "index.html">Home</a>
+        <a class="nav" href= "login.html">Login</a>
+        <a class="nav" href= "CreateAccount.html">Create Account</a>
+        <a class="nav" href= "post_event.html">Create an Event</a>
     </nav>
-
-    <h1>Create an event</h1>
-    <form id="Event_Form">
-      <div>
-        <label for="name">Event Name: </label>
-        <input id="name" type="text">
-      </div>
-      <div>
-        <label for="location">Location: </label>
-        <input id="location" type="text">
-      </div>
-      <div>
-        <label for="start_date">Start date: </label>
-        <input id="start_date" type="datetime-local">
-      </div>
-      <div>
-        <label for="end_date">End date: </label>
-        <input id="end_date" type="datetime-local">
-      </div>
-      <div>
-        <p>Description: </p>
-        <textarea id="description" type="text"></textarea>
-      </div>
-      <div>
-        <input type="submit" value="Create Event">
-      </div>
-    </form>
-
+  </header>
+  <main>
+    <h1>Create an Event</h1>
+    <p><em>Enter your event details below:</em></p>
+    <br>
+    <div class="form-container">
+      <form id="Event_Form">
+        <div>
+          <label for="name">Event Name</label>
+          <input class="input" id="name" type="text" required>
+        </div>
+        <div>
+          <label for="location">Location</label>
+          <input class="input" id="location" type="text" required>
+        </div>
+        <div>
+          <label for="start_date">Start date</label>
+          <input class="input" id="start_date" type="datetime-local" required>
+        </div>
+        <div>
+          <label for="end_date">End date</label>
+          <input class="input" id="end_date" type="datetime-local" required> 
+        </div>
+        <div>
+          <p>Description</p>
+          <textarea class="input" id="description" type="text"></textarea>
+        </div>
+        <div>
+          <input type="submit" value="Create Event">
+        </div>
+      </form>
+    </div>
     <div id="message"></div>
-
-    <script src="script.js"></script>
+  </main>
+  <script src="script.js"></script>
 </body>
 </html>

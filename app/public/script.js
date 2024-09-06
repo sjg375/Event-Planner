@@ -1,6 +1,19 @@
 document.addEventListener('DOMContentLoaded', function() {
   let createForm = document.getElementById('createForm');
   let loginForm = document.getElementById('loginForm');
+  
+
+  async function viewDetails(event_id){
+    let get_url = "/events/" + event_id;
+    let response = await fetch(get_url);
+
+    if(response.ok){
+      console.log("HTTP response recieved");
+    }
+    else{
+      console.log("Something went wrong.");
+    }
+  }
 
   if (loginForm) {
     loginForm.addEventListener('submit', async function(e) {
@@ -134,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
         initialView: 'dayGridMonth',
         events: async function(fetchInfo, successCallback, failureCallback) {
           try {
-            const response = await fetch('/api/events');  // Fetch events from the backend
+            const response = await fetch('/events');  // Fetch events from the backend
             const events = await response.json();
             successCallback(events);
           } catch (error) {

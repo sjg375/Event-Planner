@@ -101,10 +101,47 @@ function buildEventPage(event){
         <p><span class ='label'>End Date:</span> ${end_date}</p>
         <p><span class ='label'>Description:</span><textarea type='text'>${description}</textarea></p>
       </div>
+    <script src="script.js"></script>
     </body>
     </html>`;
   
   return string;
+}
+
+function allEventsPage(events){
+  let string = `
+  <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Event Details</title>
+      <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+      <nav>
+        <ul> 
+          <li> <a href= "index.html">Home</a></li>
+          <li> <a href= "login.html">Login</a></li>
+          <li> <a href= "CreateAccount.html">Create Account</a></li>
+          <li> <a href= "post_event.html">Create an Event</a></li>
+        </ul>
+      </nav>
+      <div class="event-div">`;
+
+  for(let event in events){
+    //Have a div with the event name and a button
+    string += `
+        <div class="event-item">
+          <h2>${event.name}</h2>
+          <button class="event-button" onclick="viewDetails('${event.id}')">View Details</button>
+        </div>`;
+  }
+  string += `
+      </div>
+      <script src="script.js"></script>
+    </body>
+    </html>`;
 }
 
 app.post("/create", async (req, res) => {
@@ -294,7 +331,7 @@ app.get("/events", async (req, res) => {
   let haveEvents;
   try{
     haveEvents = await pool.query(
-      "SELECT name, location, start_date, end_date, description, attendees FROM events FOR JSON PATH"
+      "SELECT id, name, location, start_date, end_date, description FROM events FOR JSON PATH"
     );
   }
   catch(error){
@@ -302,7 +339,9 @@ app.get("/events", async (req, res) => {
     return res.sendStatus(500);
   }
 
-  return res.status(200).json(haveEvents);
+  let page = allEventsPage(haveEvents);
+
+  return res.status(200).send(page);
 });
 
 
@@ -356,17 +395,17 @@ app.post("/events/:event", async (req, res) => {
   res.send();
 });
 
-app.get("/events/:event", async (req, res) => {
+app.get("/events/:event_id", async (req, res) => {
   //Should serve the event object
   //need to query the sql table to get the event from event ID
   //call create event page on the json
   //send the html page
-  let event = req.params.event;
+  let event = req.params.event_id;
 
   let eventExists;
   try{
     eventExists = await pool.query(
-      "SELECT 1 FROM events WHERE name = $1 FOR JSON PATH",
+      "SELECT 1 FROM events WHERE id = $1 FOR JSON PATH",
       [event]
     );
     if(eventExists.rows.length < 1){
