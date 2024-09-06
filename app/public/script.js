@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
         initialView: 'dayGridMonth',
         events: async function(fetchInfo, successCallback, failureCallback) {
           try {
-            const response = await fetch('/events');  // Fetch events from the backend
+            const response = await fetch('/api/events');  // Fetch events from the backend
             const events = await response.json();
             successCallback(events);
           } catch (error) {

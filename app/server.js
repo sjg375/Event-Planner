@@ -344,6 +344,22 @@ app.get("/events", async (req, res) => {
   return res.status(200).send(page);
 });
 
+app.get("/api/events", async (req, res) => {
+  //Should Serve all events
+  let haveEvents;
+  try{
+    haveEvents = await pool.query(
+      "SELECT name, location, start_date, end_date, description FROM events FOR JSON PATH"
+    );
+  }
+  catch(error){
+    console.log("SELECT FAILED", error);
+    return res.sendStatus(500);
+  }
+
+  return res.status(200).json(haveEvents);
+});
+
 
 //Still need to add cookie saving to relate the event to the creator
 app.post("/events/:event", async (req, res) => {
