@@ -4,19 +4,58 @@ let argon2 = require("argon2"); // or bcrypt, whatever
 let cookieParser = require("cookie-parser");
 let crypto = require("crypto");
 const path = require('path');
-let env = require("../env.json");
 
-let hostname = "localhost";
+process.chdir(__dirname);
+
 let port = 3000;
+let host;
+let databaseConfig;
+// fly.io sets NODE_ENV to production automatically, otherwise it's unset when running locally
+if (process.env.NODE_ENV == "production") {
+	host = "0.0.0.0";
+	databaseConfig = { connectionString: process.env.DATABASE_URL };
+} else {
+	host = "localhost";
+	let { PGUSER, PGPASSWORD, PGDATABASE, PGHOST, PGPORT } = process.env;
+	databaseConfig = { PGUSER, PGPASSWORD, PGDATABASE, PGHOST, PGPORT };
+  console.log(PGUSER);
+}
 
-let pool = new Pool(env);
+let pool = new Pool(databaseConfig);
+pool.connect().then(() => {
+	console.log("Connected to db");
+});
+
 let app = express();
+app.use(express.json());
+app.use(cookieParser());
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-app.use(express.json());
-app.use(cookieParser());
+
+app.post("/datum", (req, res) => {
+	let { datum } = req.body;
+	if (datum === undefined) {
+		return res.status(400).send({});
+	}
+	pool.query("INSERT INTO foo (datum) VALUES ($1)", [datum]).then(result => {
+		return res.send({});
+	}).catch(error => {
+		console.log(error);
+		return res.status(500).send({});
+	})
+});
+
+app.get("/data", (req, res) => {
+	pool.query("SELECT * FROM foo").then(result => {
+		return res.send({data: result.rows});
+	}).catch(error => {
+		console.log(error);
+		return res.status(500).send({data: []});
+	})
+})
+
 
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -444,6 +483,6 @@ app.put("/events/:event", async (req, res) => {
   
 });
 
-app.listen(port, hostname, () => {
-  console.log(`http://${hostname}:${port}`);
+app.listen(port, host, () => {
+  console.log(`http://${host}:${port}`);
 });
