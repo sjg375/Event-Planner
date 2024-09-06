@@ -86,14 +86,14 @@ function buildEventPage(event){
       <link rel="stylesheet" href="style.css">
     </head>
     <body>
-      <nav>
-        <ul> 
-          <li> <a href= "index.html">Home</a></li>
-          <li> <a href= "login.html">Login</a></li>
-          <li> <a href= "CreateAccount.html">Create Account</a></li>
-          <li> <a href= "post_event.html">Create an Event</a></li>
-        </ul>
+      <header>
+        <nav>
+          <a class="nav" href= "index.html">Home</a>
+          <a class="nav" href= "login.html">Login</a>
+          <a class="nav" href= "CreateAccount.html">Create Account</a>
+          <a class="nav" href= "post_event.html">Create an Event</a>
       </nav>
+      </header>
       <div class='event-details'>
         <h1>${name}</h1>
         <p><span class ='label'>Location:</span> ${location}</p>
@@ -119,14 +119,14 @@ function allEventsPage(events){
       <link rel="stylesheet" href="style.css">
     </head>
     <body>
-      <nav>
-        <ul> 
-          <li> <a href= "index.html">Home</a></li>
-          <li> <a href= "login.html">Login</a></li>
-          <li> <a href= "CreateAccount.html">Create Account</a></li>
-          <li> <a href= "post_event.html">Create an Event</a></li>
-        </ul>
+      <header>
+        <nav>
+          <a class="nav" href= "index.html">Home</a>
+          <a class="nav" href= "login.html">Login</a>
+          <a class="nav" href= "CreateAccount.html">Create Account</a>
+          <a class="nav" href= "post_event.html">Create an Event</a>
       </nav>
+      </header>
       <div class="event-div">`;
 
   for(let event in events){
