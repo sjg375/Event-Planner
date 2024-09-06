@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
   let createForm = document.getElementById('createForm');
   let loginForm = document.getElementById('loginForm');
-  let eventNavlink = document.getElementById('events-link');
-  
 
   async function viewDetails(event_id){
     let get_url = "/events/" + event_id;
@@ -15,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
       console.log("Something went wrong.");
     }
   }
+  
   async function getEvents(){
     let response = await fetch("/events");
 
