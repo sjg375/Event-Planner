@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS demo;
-CREATE DATABASE demo;
-\c demo
+DROP DATABASE IF EXISTS eventplanner-db;
+CREATE DATABASE eventplanner-db;
+\c eventplanner-db
 DROP TABLE IF EXISTS users;
 CREATE TABLE users(
     id SERIAL PRIMARY KEY,

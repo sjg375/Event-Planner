@@ -2,15 +2,22 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "cd app && node server.js",
-    "setup": ""
+    "start": "node app/server.js",
+    "setup": "fly postgres connect -a eventplanner < setup.sql",
+    "start:dev": "env-cmd node app/server.js",
+    "setup:dev": "env-cmd psql -d postgres -f setup.sql"
   },
   "dependencies": {
     "@types/node": "^18.0.6",
     "argon2": "^0.40.3",
     "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
+    "env-cmd": "^10.1.0",
     "express": "^4.19.2",
     "pg": "^8.12.0"
+  },
+  "devDependencies": {
+    "@flydotio/dockerfile": "^0.5.8"
   }
 }
